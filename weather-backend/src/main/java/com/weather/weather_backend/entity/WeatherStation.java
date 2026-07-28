@@ -22,13 +22,20 @@ public class WeatherStation extends BaseEntity {
     @Column(name = "station_code", nullable = false, unique = true, length = 50)
     private String stationCode;
 
+    @Column(name = "station_name", nullable = false, length = 150)
+    private String stationName;
+
     @Column(nullable = false, length = 50)
     private String provider;
 
-    @Column(precision = 10, scale = 7)
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private StationStatus status;
+
+    @Column(precision = 10, scale = 7, nullable = false)
     private BigDecimal latitude;
 
-    @Column(precision = 10, scale = 7)
+    @Column(precision = 10, scale = 7, nullable = false)
     private BigDecimal longitude;
 
     @ManyToOne(fetch = FetchType.LAZY)

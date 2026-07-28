@@ -1,0 +1,70 @@
+version: "3.9"
+
+services:
+
+  mysql:
+    image: mysql:8.4
+    container_name: weather-mysql
+
+    restart: unless-stopped
+
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+
+    ports:
+      - "3306:3306"
+
+    volumes:
+      - mysql-data:/var/lib/mysql
+
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 10
+
+  redis:
+    image: redis:7
+
+    container_name: weather-redis
+
+    restart: unless-stopped
+
+    ports:
+      - "6379:6379"
+
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      retries: 10
+
+  weather-backend:
+
+    build: .
+
+    container_name: weather-backend
+
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+      redis:
+        condition: service_healthy
+
+    environment:
+
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
+
+      OPEN_WEATHER_API_KEY: ${OPEN_WEATHER_API_KEY}
+
+    ports:
+      - "8080:8080"
+
+volumes:
+
+  mysql-data:

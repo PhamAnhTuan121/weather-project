@@ -19,4 +19,28 @@ public class ApiResult<T> {
 
     @Builder.Default
     private final LocalDateTime timestamp = LocalDateTime.now();
+
+
+    public static <T> ApiResult<T> success(T data) {
+        return ApiResult.<T>builder()
+                .success(true)
+                .message("Success")
+                .data(data)
+                .build();
+    }
+
+    public static <T> ApiResult<T> success(String message, T data) {
+        return ApiResult.<T>builder()
+                .success(true)
+                .message(message)
+                .data(data)
+                .build();
+    }
+
+    public static <T> ApiResult<T> error(String message) {
+        return ApiResult.<T>builder()
+                .success(false)
+                .message(message)
+                .build();
+    }
 }

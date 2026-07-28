@@ -2,21 +2,17 @@ server:
   port: 8080
 
 spring:
-  application:
-    name: weather-backend
-  devtools:
-    restart:
-      enabled: false
   datasource:
-    url: jdbc:mysql://localhost:3306/weather_db?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh&allowPublicKeyRetrieval=true
-    username: root
-    password: 123456
+    url: ${DB_URL:jdbc:mysql://localhost:3306/weather_db?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Ho_Chi_Minh}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:123456}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
     hibernate:
       ddl-auto: validate
-    show-sql: true
+    open-in-view: false
+    show-sql: false
     properties:
       hibernate:
         format_sql: true
@@ -25,17 +21,23 @@ spring:
     enabled: true
     locations: classpath:db/migration
 
-  springdoc:
-    api-docs:
-      path: /v3/api-docs
-
-    swagger-ui:
-      path: /swagger-ui.html
-      operationsSorter: method
-      tagsSorter: alpha
-      display-request-duration: true
-
   data:
     redis:
-      host: localhost
-      port: 6379
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 3000ms
+
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+
+  swagger-ui:
+    path: /swagger-ui.html
+    operationsSorter: method
+    tagsSorter: alpha
+    display-request-duration: true
+
+weather:
+  api:
+    base-url: https://api.openweathermap.org/data/2.5
+    api-key: ${OPEN_WEATHER_API_KEY}
