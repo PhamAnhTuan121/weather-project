@@ -37,6 +37,19 @@ springdoc:
     tagsSorter: alpha
     display-request-duration: true
 
+scheduler:
+  enabled: ${SCHEDULER_ENABLED:true}
+
+  current-weather:
+    cron: ${CURRENT_WEATHER_CRON:0 */5 * * * *}
+
+  forecast:
+    cron: ${FORECAST_CRON:0 */30 * * * *}
+
+  history:
+    cron: ${HISTORY_CRON:30 */5 * * * *}
+
+
 weather:
   api:
     base-url: https://api.openweathermap.org/data/2.5

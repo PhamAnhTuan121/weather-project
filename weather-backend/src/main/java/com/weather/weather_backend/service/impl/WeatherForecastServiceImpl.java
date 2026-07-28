@@ -385,11 +385,6 @@ public class WeatherForecastServiceImpl
                         ? null
                         : BigDecimal.valueOf(item.getMain().getFeelsLike()));
 
-        entity.setFeelsLike(
-                item.getMain().getFeelsLike() == null
-                        ? null
-                        : BigDecimal.valueOf(item.getMain().getFeelsLike()));
-
         entity.setHumidity(
                 item.getMain().getHumidity());
 
